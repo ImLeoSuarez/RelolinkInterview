@@ -1,27 +1,73 @@
 <ion-header>
-<ion-toolbar>
-<ion-title>Step Form</ion-title>
-</ion-toolbar>
+  <ion-toolbar>
+    <ion-title>Step Form</ion-title>
+  </ion-toolbar>
 </ion-header>
- 
-  <ion-content class="ion-padding">
-<form>
-<div *ngFor="let step of steps">
-<ion-item>
-<ion-label>{{ 'Step ' + step }}</ion-label>
-<ion-select
-            [(ngModel)]="formValues[step]"
-            name="step{{step}}"
-            placeholder="Select option"
->
-<ion-select-option *ngFor="let opt of options" [value]="opt">
-              {{ opt }}
-</ion-select-option>
-</ion-select>
-</ion-item>
-</div>
-</form>
- 
-    <ion-button expand="block">Submit</ion-button>
- 
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="handleSubmit(formBlock)" #formBlock="ngForm">
+    <div *ngFor="let step of steps">
+      <ion-item>
+        <ion-label>{{ 'Step ' + step.step }}</ion-label>
+
+        <div *ngIf="step.type == 'Input'">
+          <ion-input
+            [(ngModel)]="formValues[step.step]"
+            type="text"
+            fill="solid"
+            placeholder="Enter your {{step.label}}"
+            [name]="'step' + step.step"
+            required
+          />
+        </div>
+
+        <div *ngIf="step.type == 'Email'">
+          <ion-input
+            [(ngModel)]="formValues[step.step]"
+            (ngModelChange)="handleSelectChange(step)"
+            type="email"
+            fill="solid"
+            placeholder="Enter your {{step.label}}"
+            [name]="'step' + step.step"
+            required
+          />
+        </div>
+
+        <div *ngIf="step.type == 'Options'">
+          <ion-select
+            [(ngModel)]="formValues[step.step]"
+            (ngModelChange)="handleSelectChange(step)"
+            [name]="'step' + step.step"
+            placeholder="Select your {{step.label}}"
+            required
+          >
+            <div *ngIf="step.step == 3">
+              <ion-select-option
+                *ngFor="let opt of Options3"
+                [value]="opt"
+              >
+                {{ opt }}
+              </ion-select-option>
+            </div>
+
+            <div *ngIf="step.step == 4">
+              <ion-select-option
+                *ngFor="let opt of Options4[Options3.indexOf(formValues[3])]"
+                [value]="opt"
+              >
+                {{ opt }}
+              </ion-select-option>
+            </div>
+          </ion-select>
+        </div>
+      </ion-item>
+    </div>
+  <div style="margin: 10px;">
+  <ion-text color="danger">{{errorMessage}}</ion-text>
+  <ion-text color="success">{{successMessage}}</ion-text>
+  </div>
+
+  <ion-button expand="block" type="submit">Submit</ion-button>
+  </form>
+
 </ion-content>

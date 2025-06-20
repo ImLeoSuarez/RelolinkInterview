@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+class Solution {
+
+    static List<(int, int)> getIndices(int[] arr, int target) {
+        List<(int, int)> result = new List<(int, int)>();
+        for(int i=0; i< arr.Length; i++){
+            for(int j=0; j< arr.Length; j++){
+                if(arr[i] + arr[j] == target)
+                    result.Add((i,j));
+            }
+        }
+        
+        return result;
+    }
+
+    static void Main(String[] args) {
+        int[] arr = [2,7,11,15];
+        int target = 9;
+        var result = getIndices(arr, target);
+        foreach(var indices in result){
+            Console.WriteLine($"[{indices.Item1}, {indices.Item2}]");
+        }
+    }
+}      

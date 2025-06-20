@@ -1,0 +1,32 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+class Solution {
+
+    static int getClosestSum(int[] arr, int target) {
+        List<int> sums = new List<int>();
+        Array.Sort(arr);
+        for(int position = 0; position <= arr.Length - 3; position++){
+            for(int i=position + 2; i< arr.Length; i++){
+                Console.WriteLine($"i1: {arr[position]} i2: {arr[position + 1]} i3: {arr[i]}");
+                sums.Add(arr[position] + arr[position + 1] + arr[i]);
+            }
+        }
+        
+        int result = 0;
+        foreach(var val in sums){
+            Console.WriteLine($"val: {val}");
+            if(val >= target)
+                result = val;
+        }
+        
+        return result;
+    }
+
+    static void Main(String[] args) {
+        int[] arr = [-1,2,1,-4];
+        int target = 1;
+        var result = getClosestSum(arr, target);
+        Console.WriteLine($"{result}");
+    }
+}      
